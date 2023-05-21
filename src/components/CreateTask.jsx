@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import { t } from "@lingui/macro";
+import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
@@ -13,19 +14,29 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DatePickerComponent from "./DatePickerComponent";
+import withStyles from "@mui/styles/withStyles";
+
+const styles = (theme) => ({
+  root: {
+    border: 1,
+    borderRadius: 2,
+    borderColor: "grey",
+    p: 2,
+  },
+});
 
 const LOCAL_CONSTANTS = {
-  title: t`Create a New Task`,
+  title: t`Capture Task Details`,
   task: t`Task`,
   description: t`Description`,
   dueDate: t`Due Date`,
-  buttonTitle: t`Create Task`,
+  buttonTitle: t`Create a New Task`,
 };
-const CreateTask = ({}) => {
+const CreateTask = ({ addTask }) => {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(null);
+  const [title, setName] = useState(null);
   const [description, setDescription] = useState(null);
-  const [date, setDate] = useState(dayjs());
+  const [dueDate, setDate] = useState(dayjs());
 
   const [errors, setErrors] = useState({
     name: null,
@@ -33,10 +44,6 @@ const CreateTask = ({}) => {
 
   const handleDialog = () => {
     setOpen(!open);
-  };
-
-  const createTask = () => {
-    handleDialog();
   };
 
   const handleTaskName = (e) => {
@@ -53,28 +60,36 @@ const CreateTask = ({}) => {
     dayjs(value).isValid() && setDate(value);
   };
 
-  console.log(name, description, date);
+  const createTask = () => {
+    addTask({ title, dueDate, description });
+    handleDialog();
+  };
 
   return (
     <>
-      <Box
-        sx={{
-          border: 1,
-          borderRadius: 2,
-          borderColor: "primary.main",
-          p: 2,
-        }}
-      >
-        <Grid container spacing={4} direction="row">
-          <Grid item xs={4}>
-            <Fab color="primary" aria-label="add" onClick={handleDialog}>
-              <AddIcon />
-            </Fab>
+      <Box sx={{ flexGrow: 1, overflow: "hidden", px: 3 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            mx: "auto",
+            p: 2,
+            borderRadius: 2,
+            maxWidth: 500,
+          }}
+        >
+          <Grid container spacing={4} direction="row" wrap="nowrap">
+            <Grid item>
+              <Fab color="primary" aria-label="add" onClick={handleDialog}>
+                <AddIcon fontSize="small" />
+              </Fab>
+            </Grid>
+            <Grid item mt={2}>
+              <Typography color="blue">
+                {LOCAL_CONSTANTS.buttonTitle}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={8} mt={2}>
-            <Typography color="blue">{LOCAL_CONSTANTS.buttonTitle}</Typography>
-          </Grid>
-        </Grid>
+        </Paper>
       </Box>
       <Dialog
         open={open}
@@ -91,9 +106,9 @@ const CreateTask = ({}) => {
               <TextField
                 label={LOCAL_CONSTANTS.task}
                 id="fullWidth"
-                value={name}
+                value={title}
                 onChange={handleTaskName}
-                helperText={errors["name"]}
+                helperText={errors["title"]}
                 required
                 fullWidth
               />
@@ -113,7 +128,7 @@ const CreateTask = ({}) => {
             <Grid item xs={12}>
               <DatePickerComponent
                 label={LOCAL_CONSTANTS.dueDate}
-                value={date}
+                value={dueDate}
                 minDate={dayjs()}
                 onChange={handleDate}
               />
@@ -139,4 +154,4 @@ const CreateTask = ({}) => {
   );
 };
 
-export default CreateTask;
+export default withStyles(styles)(CreateTask);

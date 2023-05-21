@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,12 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
 const TodoBar = ({}) => {
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -25,24 +22,26 @@ const TodoBar = ({}) => {
     setAnchorEl(null);
   };
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Grid container spacing={4}>
-          <Grid item justifyContent="flex-end">
-            <Box display="flex" justifyContent="flex-start">
+    <Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="secondary">
+          <Toolbar>
+            <Box sx={{ flexGrow: 1 }}>
               <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2 }}
               >
                 <MenuIcon />
               </IconButton>
             </Box>
-          </Grid>
-          <Grid item justifyContent="flex-end">
-            <Box display="flex" justifyContent="flex-end">
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -72,10 +71,10 @@ const TodoBar = ({}) => {
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
             </Box>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </Box>
   );
 };
 
