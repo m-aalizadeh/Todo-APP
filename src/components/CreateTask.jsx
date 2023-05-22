@@ -13,8 +13,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import DatePickerComponent from "./DatePickerComponent";
 import withStyles from "@mui/styles/withStyles";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import DatePickerComponent from "./DatePickerComponent";
 
 const styles = (theme) => ({
   root: {
@@ -37,6 +42,7 @@ const CreateTask = ({ addTask }) => {
   const [title, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [dueDate, setDate] = useState(dayjs());
+  const [priority, setPriority] = useState("low");
 
   const [errors, setErrors] = useState({
     name: null,
@@ -57,11 +63,15 @@ const CreateTask = ({ addTask }) => {
   };
 
   const handleDate = (value) => {
-    dayjs(value).isValid() && setDate(value);
+    value && setDate(value);
+  };
+
+  const handlePriority = (e) => {
+    setPriority(e.target.value);
   };
 
   const createTask = () => {
-    addTask({ title, dueDate, description });
+    addTask({ title, dueDate, description, priority });
     handleDialog();
   };
 
@@ -97,9 +107,11 @@ const CreateTask = ({ addTask }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {LOCAL_CONSTANTS.title}
-        </DialogTitle>
+        <Grid item xs={12}>
+          <DialogTitle id="alert-dialog-title">
+            {LOCAL_CONSTANTS.title}
+          </DialogTitle>
+        </Grid>
         <DialogContent>
           <Grid container direction="row" spacing={4}>
             <Grid item xs={12}>
@@ -132,6 +144,31 @@ const CreateTask = ({ addTask }) => {
                 minDate={dayjs()}
                 onChange={handleDate}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                  {t`Priority`}
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={priority}
+                  onChange={handlePriority}
+                >
+                  <FormControlLabel
+                    value="low"
+                    control={<Radio />}
+                    label="LOW"
+                  />
+                  <FormControlLabel
+                    value="high"
+                    control={<Radio />}
+                    label={t`HIGH`}
+                  />
+                </RadioGroup>
+              </FormControl>
             </Grid>
           </Grid>
         </DialogContent>

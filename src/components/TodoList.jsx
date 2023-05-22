@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import _cloneDeep from "lodash/cloneDeep";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import TodoBar from "./TodoBar";
 import CreateTask from "./CreateTask";
 import Todos from "./Todos";
+import { APIHelper } from "../services/api";
+
+const { getAllRequest, postRequest } = APIHelper;
 
 const styles = (theme) => ({
   root: {
@@ -17,13 +19,22 @@ const styles = (theme) => ({
 const TodoList = ({ classes }) => {
   const [tasks, setTodos] = useState([]);
 
-  const addTask = (task) => {
-    let allTodos = _cloneDeep(tasks);
-    allTodos.push(task);
-    setTodos(allTodos);
+  const getTodos = async () => {
+    const result = await getAllRequest("todos");
+    if (Array.isArray(result) && result.length) setTodos(result);
   };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  const addTask = async (task) => {
+    await postRequest("createTask", task);
+    getTodos();
+  };
+
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={4}>
       <Grid item xs={12}>
         <TodoBar />
       </Grid>

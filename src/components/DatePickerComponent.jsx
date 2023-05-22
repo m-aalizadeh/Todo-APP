@@ -15,7 +15,7 @@ export default function DatePickerComponent({
         label={label}
         slotProps={{
           textField: {
-            helperText: "MM/DD/YYYY",
+            helperText: "YYYY-MM-DD",
           },
         }}
         value={value}
