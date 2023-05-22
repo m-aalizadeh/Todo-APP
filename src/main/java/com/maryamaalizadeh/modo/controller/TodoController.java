@@ -3,10 +3,10 @@ package com.maryamaalizadeh.modo.controller;
 import com.maryamaalizadeh.modo.model.Todo;
 import com.maryamaalizadeh.modo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/app/todo")
 public class TodoController {
@@ -17,5 +17,13 @@ public class TodoController {
     @PostMapping("/createTask")
     public Todo createTodo(@RequestBody Todo todo){
         return  todoService.createTodo(todo);
+    }
+
+    @GetMapping("/todos")
+    public List<Todo> getAllTodos(){ return todoService.getAllTodos();}
+
+    @DeleteMapping("/{id}")
+    public String deleteTodo(@PathVariable String id){
+        return todoService.deleteTodo(id);
     }
 }

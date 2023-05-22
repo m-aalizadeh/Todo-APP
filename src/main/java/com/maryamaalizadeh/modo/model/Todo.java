@@ -1,6 +1,7 @@
 package com.maryamaalizadeh.modo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -11,16 +12,16 @@ public class Todo {
     private String id;
     private String title;
     private String description;
-
-    private Date createdDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date dueDate;
 
     public Todo() {
     }
 
-    public Todo(String title, String description, Date createdDate) {
+    public Todo(String title, String description, Date dueDate) {
         this.title = title;
         this.description = description;
-        this.createdDate = createdDate;
+        this.dueDate = dueDate;
     }
 
     public String getId() {
@@ -48,11 +49,11 @@ public class Todo {
     }
 
     public Date getCreatedDate() {
-        return createdDate;
+        return dueDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     @Override
@@ -61,7 +62,7 @@ public class Todo {
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", createdDate=" + createdDate +
+                ", dueDate=" + dueDate +
                 '}';
     }
 }
