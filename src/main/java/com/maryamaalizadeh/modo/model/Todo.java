@@ -2,6 +2,8 @@ package com.maryamaalizadeh.modo.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -15,13 +17,17 @@ public class Todo {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
 
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
     public Todo() {
     }
 
-    public Todo(String title, String description, Date dueDate) {
+    public Todo(String title, String description, Date dueDate, Priority priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.priority = priority;
     }
 
     public String getId() {
@@ -56,6 +62,22 @@ public class Todo {
         this.dueDate = dueDate;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "Todo{" +
@@ -63,6 +85,7 @@ public class Todo {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
+                ", priority=" + priority +
                 '}';
     }
 }

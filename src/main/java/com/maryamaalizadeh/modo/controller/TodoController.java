@@ -3,6 +3,7 @@ package com.maryamaalizadeh.modo.controller;
 import com.maryamaalizadeh.modo.model.Todo;
 import com.maryamaalizadeh.modo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class TodoController {
     private TodoService todoService;
 
     @PostMapping("/createTask")
-    public Todo createTodo(@RequestBody Todo todo){
+    public ResponseEntity<?> createTodo(@RequestBody Todo todo){
         return  todoService.createTodo(todo);
     }
 
