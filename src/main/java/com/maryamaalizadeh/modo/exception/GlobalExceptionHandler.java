@@ -1,5 +1,6 @@
 package com.maryamaalizadeh.modo.exception;
 
+import com.maryamaalizadeh.modo.constants.ExceptionConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = TaskNotFoundException.class)
     public ResponseEntity taskNotFoundException(TaskNotFoundException taskNotFoundException){
-        return new ResponseEntity<String>(message2, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<String>(ExceptionConstants.TASK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = InternalServerException.class)
     public ResponseEntity databaseConnectionFailsException(Exception exception){
-        return new ResponseEntity<String>(message3, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>(ExceptionConstants.INTERNAL_SERVICE_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = BadRequestHandler.class)
-    public ResponseEntity badRequesthandle(BadRequestHandler badRequestHandler){
-        return new ResponseEntity<String>(message2, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity badRequestHandler(BadRequestHandler badRequestHandler){
+        return new ResponseEntity<String>(ExceptionConstants.TASK_NO_TITLE, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = TaskAlreadyExists.class)
+    public ResponseEntity taskAlreadyExistsException(TaskAlreadyExists taskAlreadyExists){
+        return new ResponseEntity<String>(ExceptionConstants.TASK_ALREADY_EXIST, HttpStatus.CONFLICT);
+    }
+
+//    @ExceptionHandler(value = BadRequestHandler.class)
+//    public ResponseEntity taskTitleValidation(BadRequestHandler badRequestHandler){
+//        return new ResponseEntity<String>(ExceptionConstants.TASK_NO_TITLE, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+
 }
