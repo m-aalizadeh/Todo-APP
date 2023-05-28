@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/app/todo/";
+const BASE_URL = "http://localhost:8080/app/v1/";
 
 class ApiHelper {
   //     private accessToken?: string;

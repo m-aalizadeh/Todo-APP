@@ -42,7 +42,7 @@ const CreateTask = ({ addTask }) => {
   const [title, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [dueDate, setDate] = useState(dayjs());
-  const [priority, setPriority] = useState("low");
+  const [priority, setPriority] = useState("LOW");
 
   const [errors, setErrors] = useState({
     name: null,
@@ -158,12 +158,12 @@ const CreateTask = ({ addTask }) => {
                   onChange={handlePriority}
                 >
                   <FormControlLabel
-                    value="low"
+                    value="LOW"
                     control={<Radio />}
                     label="LOW"
                   />
                   <FormControlLabel
-                    value="high"
+                    value="HIGH"
                     control={<Radio />}
                     label={t`HIGH`}
                   />

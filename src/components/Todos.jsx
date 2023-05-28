@@ -42,9 +42,10 @@ const Todos = ({ todos = [] }) => {
             title = "",
             description = "",
             dueDate = "",
-            priority = "high",
+            priority = "LOW",
           }) => {
             const date = getFormattedDate(dueDate);
+            console.log(priority === "LOW" ? "secondary" : "primary");
             return (
               <ListItem key={title}>
                 <Grid container direction="column">
@@ -55,7 +56,7 @@ const Todos = ({ todos = [] }) => {
                           <Tooltip title={priority}>
                             <PriorityHighIcon
                               color={
-                                priority === "Low" ? "secondary" : "primary"
+                                priority === "HIGH" ? "primary" : "secondary"
                               }
                             />
                           </Tooltip>

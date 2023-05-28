@@ -29,7 +29,7 @@ const TodoList = ({ classes }) => {
   }, []);
 
   const addTask = async (task) => {
-    await postRequest("createTask", task);
+    await postRequest("todo", task);
     getTodos();
   };
 
