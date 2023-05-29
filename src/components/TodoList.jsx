@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _isEmpty from "lodash/isEmpty";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import TodoBar from "./TodoBar";
@@ -21,7 +22,7 @@ const TodoList = ({ classes }) => {
 
   const getTodos = async () => {
     const result = await getAllRequest("todos");
-    if (Array.isArray(result) && result.length) setTodos(result);
+    if (!_isEmpty(result) && result.content) setTodos(result.content);
   };
 
   useEffect(() => {
