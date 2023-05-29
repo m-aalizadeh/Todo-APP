@@ -9,6 +9,10 @@ import com.maryamaalizadeh.modo.model.Todo;
 import com.maryamaalizadeh.modo.repository.TodoRepository;
 import com.maryamaalizadeh.modo.util.EntityToDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -49,8 +53,10 @@ public class TodoService {
 
     }
 
-    public List<Todo> getAllTodos(){
-        return (List<Todo>) todoRepository.findAll();
+    public Page<Todo> getAllTodos(Integer offset, Integer limit){
+        Pageable pageable = PageRequest.of(offset, limit, Sort.Direction.DESC, "createdAt");
+         Page<Todo> todos =  todoRepository.findAll(pageable);
+         return todos;
     }
 
     public ResponseEntity<?> getTodoById(String id){
