@@ -1,22 +1,48 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import ListItemButton from "@mui/material/ListItemButton";
+import withStyles from "@mui/styles/withStyles";
 import NoData from "./NoData";
 import { getFormattedDate } from "../common/utils";
 
-const Todos = ({ todos = [] }) => {
+const MenuItems = ({ handleClick, open, handleExpand }) => {
+  return (
+    <>
+      <IconButton size="small" onClick={() => handleClick("edit")}>
+        <EditIcon />
+      </IconButton>
+      <IconButton size="small" onClick={() => handleClick("delete")}>
+        <DeleteIcon />
+      </IconButton>
+      <IconButton size="small" onClick={handleExpand}>
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </IconButton>
+    </>
+  );
+};
+
+const styles = () => ({
+  highPriorityCard: {
+    borderWidth: 4,
+    borderLeft: `2px solid red`,
+  },
+  lowPriorityCard: {
+    borderWidth: 4,
+    borderLeft: `2px solid orange`,
+  },
+});
+
+const Todos = ({ todos = [], classes }) => {
   const [open, setOpen] = useState(null);
 
   const handleClick = (id) => {
@@ -24,15 +50,20 @@ const Todos = ({ todos = [] }) => {
     setOpen(isOpen);
   };
 
-  return !todos.length ? (
-    <NoData />
-  ) : (
+  const handleEdit = () => {
+    console.log("edit");
+  };
+
+  if (!todos.length) {
+    return <NoData />;
+  }
+
+  return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <List
+      <Grid
         sx={{
           width: "100%",
           maxWidth: 530,
-          borderRadius: 2,
           bgcolor: "background.paper",
         }}
       >
@@ -45,44 +76,37 @@ const Todos = ({ todos = [] }) => {
             priority = "LOW",
           }) => {
             const date = getFormattedDate(dueDate);
-            console.log(priority === "LOW" ? "secondary" : "primary");
             return (
-              <ListItem key={title}>
-                <Grid container direction="column">
-                  <Grid item xs={12}>
-                    <ListItemButton onClick={() => handleClick(id)}>
-                      <ListItemAvatar>
-                        <Avatar>
-                          <Tooltip title={priority}>
-                            <PriorityHighIcon
-                              color={
-                                priority === "HIGH" ? "primary" : "secondary"
-                              }
-                            />
-                          </Tooltip>
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={title} secondary={date} />
-                      {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Collapse in={open === id} timeout="auto" unmountOnExit>
-                      <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
-                          <Typography>{description}</Typography>
-                        </ListItemButton>
-                      </List>
-                    </Collapse>
-                  </Grid>
-                </Grid>
-              </ListItem>
+              <Card
+                className={
+                  priority === "LOW" || !priority
+                    ? classes.lowPriorityCard
+                    : classes.highPriorityCard
+                }
+                key={title}
+              >
+                <CardHeader
+                  action={
+                    <MenuItems
+                      handleClick={handleEdit}
+                      handleExpand={() => handleClick(id)}
+                    />
+                  }
+                  title={title}
+                  subheader={date}
+                />
+                <Collapse in={open === id} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <Typography paragraph>{description}</Typography>
+                  </CardContent>
+                </Collapse>
+              </Card>
             );
           }
         )}
-      </List>
+      </Grid>
     </Box>
   );
 };
 
-export default Todos;
+export default withStyles(styles)(Todos);
