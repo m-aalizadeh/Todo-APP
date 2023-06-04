@@ -6,6 +6,7 @@ import com.maryamaalizadeh.modo.exception.BadRequestHandler;
 import com.maryamaalizadeh.modo.exception.TaskAlreadyExists;
 import com.maryamaalizadeh.modo.exception.TaskNotFoundException;
 import com.maryamaalizadeh.modo.model.Todo;
+import com.maryamaalizadeh.modo.payload.DeleteTodoResponse;
 import com.maryamaalizadeh.modo.repository.TodoRepository;
 import com.maryamaalizadeh.modo.util.EntityToDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class TodoService {
         }
     }
 
-    public String deleteTodo(String id){
+    public DeleteTodoResponse deleteTodo(String id){
         if(id == null || id == ""){
             throw new BadRequestHandler(ExceptionConstants.MISSING_MANDATORY_ID);
         }else {
@@ -81,11 +82,12 @@ public class TodoService {
                 throw new TaskNotFoundException();
             }else {
                 todoRepository.deleteById(id);
-                return "Task removed successfully!";
+                return new DeleteTodoResponse("Task removed successfully!", "success");
+                }
             }
         }
 
-    }
+
 
     public ResponseEntity<?> updateTodo(@PathVariable String id, @RequestBody TodoDto todoDto){
         if(id == null || id == ""){

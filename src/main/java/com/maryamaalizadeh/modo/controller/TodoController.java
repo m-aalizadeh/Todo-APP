@@ -3,6 +3,7 @@ package com.maryamaalizadeh.modo.controller;
 import com.maryamaalizadeh.modo.constants.ControllerConstants;
 import com.maryamaalizadeh.modo.dto.TodoDto;
 import com.maryamaalizadeh.modo.model.Todo;
+import com.maryamaalizadeh.modo.payload.DeleteTodoResponse;
 import com.maryamaalizadeh.modo.payload.PagedResponse;
 import com.maryamaalizadeh.modo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/todo/{id}")
-    public String deleteTodo(@PathVariable String id){
+    public DeleteTodoResponse deleteTodo(@PathVariable String id){
         return todoService.deleteTodo(id);
     }
 
