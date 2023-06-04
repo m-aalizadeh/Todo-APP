@@ -15,9 +15,9 @@ class ApiHelper {
   //     return this.accessToken;
   //   };
 
-  getAllRequest = async (endpoint) => {
+  getAllRequest = async (endpoint, queryParams) => {
     try {
-      const response = await fetch(`${BASE_URL}${endpoint}`, {
+      const response = await fetch(`${BASE_URL}${endpoint}?${queryParams}`, {
         method: "GET",
       });
       const responseJson = await response.json();
@@ -54,57 +54,47 @@ class ApiHelper {
     }
   };
 
-  //   patchRequest = async (endpoint: string, body: any) => {
-  //     try {
-  //       const response = await fetch(`${API_URL}/${endpoint}`, {
-  //         method: "PATCH",
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //           "x-access-token": `${this.accessToken}`,
-  //         },
-  //         body: JSON.stringify(body),
-  //       });
-  //       const responseJson = await response.json();
-  //       const finalResponse = { data: responseJson, status: response.status };
+  patchRequest = async (endpoint, body, queryParams) => {
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}/${queryParams}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      const responseJson = await response.json();
+      const finalResponse = { data: responseJson, status: response.status };
 
-  //       if (response.status === 401) {
-  //         deleteUserInfo();
-  //         this.accessToken = undefined;
-  //         Actions.auth();
-  //       }
+      return finalResponse;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  //       return finalResponse;
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  deleteRequest = async (endpoint, queryParams) => {
+    try {
+      const response = await fetch(`${BASE_URL}${endpoint}/${queryParams}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const responseJson = await response.json();
 
-  //   deleteRequest = async (endpoint: string, body: any) => {
-  //     try {
-  //       const response = await fetch(`${API_URL}/${endpoint}`, {
-  //         method: "DELETE",
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //           "x-access-token": `${this.accessToken}`,
-  //         },
-  //         body: JSON.stringify(body),
-  //       });
-  //       const responseJson = await response.json();
-  //       const finalResponse = { data: responseJson, status: response.status };
+      // if (response.status === 401) {
+      //   deleteUserInfo();
+      //   this.accessToken = undefined;
+      //   Actions.auth();
+      // }
 
-  //       if (response.status === 401) {
-  //         deleteUserInfo();
-  //         this.accessToken = undefined;
-  //         Actions.auth();
-  //       }
-
-  //       return finalResponse;
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+      return responseJson;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export const APIHelper = new ApiHelper();

@@ -21,7 +21,7 @@ const TodoList = ({ classes }) => {
   const [tasks, setTodos] = useState([]);
 
   const getTodos = async () => {
-    const result = await getAllRequest("todos");
+    const result = await getAllRequest("todos", "offset=0&limit=20");
     if (!_isEmpty(result) && result.content) setTodos(result.content);
   };
 
@@ -43,7 +43,7 @@ const TodoList = ({ classes }) => {
         <CreateTask addTask={addTask} />
       </Grid>
       <Grid item xs={12}>
-        <Todos todos={tasks} />
+        <Todos todos={tasks} getTodos={getTodos} />
       </Grid>
     </Grid>
   );
