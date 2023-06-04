@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { t } from "@lingui/macro";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -12,16 +13,19 @@ import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import withStyles from "@mui/styles/withStyles";
+import CustomDialog from "../common/components/CustomDialog";
+import CreateTaskForm from "./CreateTaskForm";
 import NoData from "./NoData";
+import { APIHelper } from "../services/api";
 import { getFormattedDate } from "../common/utils";
 
-const MenuItems = ({ handleClick, open, handleExpand }) => {
+const MenuItems = ({ todo, handleClick, open, handleExpand }) => {
   return (
     <>
-      <IconButton size="small" onClick={() => handleClick("edit")}>
+      <IconButton size="small" onClick={() => handleClick("edit", todo)}>
         <EditIcon />
       </IconButton>
-      <IconButton size="small" onClick={() => handleClick("delete")}>
+      <IconButton size="small" onClick={() => handleClick("delete", todo.id)}>
         <DeleteIcon />
       </IconButton>
       <IconButton size="small" onClick={handleExpand}>
@@ -42,16 +46,34 @@ const styles = () => ({
   },
 });
 
-const Todos = ({ todos = [], classes }) => {
+const Todos = ({ todos = [], getTodos, classes }) => {
   const [open, setOpen] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleClick = (id) => {
     const isOpen = !open ? id : null;
     setOpen(isOpen);
   };
 
-  const handleEdit = () => {
-    console.log("edit");
+  const handleShowDialog = (todo) => {
+    setOpenDialog(todo);
+  };
+
+  const handleHideDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleEdit = async (action, todo) => {
+    if (action === "delete") {
+      await APIHelper.deleteRequest("todo", todo);
+    } else if (action === "edit") {
+      handleShowDialog(todo);
+    }
+    getTodos();
+  };
+
+  const handleUpdateTodo = async (payload) => {
+    await APIHelper.patchRequest("todo", payload, open.id);
   };
 
   if (!todos.length) {
@@ -67,44 +89,57 @@ const Todos = ({ todos = [], classes }) => {
           bgcolor: "background.paper",
         }}
       >
-        {todos.map(
-          ({
+        {todos.map((todo) => {
+          const {
             id = "",
             title = "",
             description = "",
             dueDate = "",
             priority = "LOW",
-          }) => {
-            const date = getFormattedDate(dueDate);
-            return (
-              <Card
-                className={
-                  priority === "LOW" || !priority
-                    ? classes.lowPriorityCard
-                    : classes.highPriorityCard
+          } = todo;
+          const date = getFormattedDate(dueDate);
+          return (
+            <Card
+              className={
+                priority === "LOW" || !priority
+                  ? classes.lowPriorityCard
+                  : classes.highPriorityCard
+              }
+              key={title}
+            >
+              <CardHeader
+                action={
+                  <MenuItems
+                    todo={todo}
+                    handleClick={handleEdit}
+                    handleExpand={() => handleClick(id)}
+                  />
                 }
-                key={title}
-              >
-                <CardHeader
-                  action={
-                    <MenuItems
-                      handleClick={handleEdit}
-                      handleExpand={() => handleClick(id)}
-                    />
-                  }
-                  title={title}
-                  subheader={date}
-                />
-                <Collapse in={open === id} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph>{description}</Typography>
-                  </CardContent>
-                </Collapse>
-              </Card>
-            );
-          }
-        )}
+                title={title}
+                subheader={date}
+              />
+              <Collapse in={open === id} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography paragraph>{description}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          );
+        })}
       </Grid>
+      <CustomDialog
+        open={openDialog}
+        handleCancel={handleHideDialog}
+        handleProceed={handleUpdateTodo}
+        title={t`Edit Task`}
+        component={
+          <CreateTaskForm
+            initialValues={openDialog}
+            handleProceed={handleUpdateTodo}
+            handleCancel={handleHideDialog}
+          />
+        }
+      />
     </Box>
   );
 };
