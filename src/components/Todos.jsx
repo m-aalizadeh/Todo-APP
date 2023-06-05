@@ -73,7 +73,9 @@ const Todos = ({ todos = [], getTodos, classes }) => {
   };
 
   const handleUpdateTodo = async (payload) => {
-    await APIHelper.patchRequest("todo", payload, open.id);
+    await APIHelper.patchRequest("todo", payload, openDialog.id);
+    handleHideDialog();
+    getTodos();
   };
 
   if (!todos.length) {
@@ -110,6 +112,7 @@ const Todos = ({ todos = [], getTodos, classes }) => {
               <CardHeader
                 action={
                   <MenuItems
+                    open={open}
                     todo={todo}
                     handleClick={handleEdit}
                     handleExpand={() => handleClick(id)}

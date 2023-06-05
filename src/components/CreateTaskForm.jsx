@@ -116,7 +116,9 @@ const CreateTaskForm = ({
                   label={LOCAL_CONSTANTS.dueDate}
                   name="dueDate"
                   value={values.dueDate}
-                  onChange={(e) => setFieldValue(e)}
+                  onChange={(e) => {
+                    setFieldValue("dueDate", e);
+                  }}
                   onBlur={handleBlur}
                   minDate={dayjs()}
                   fullWidth
