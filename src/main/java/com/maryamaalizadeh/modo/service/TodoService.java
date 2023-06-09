@@ -9,6 +9,8 @@ import com.maryamaalizadeh.modo.model.Todo;
 import com.maryamaalizadeh.modo.payload.DeleteTodoResponse;
 import com.maryamaalizadeh.modo.repository.TodoRepository;
 import com.maryamaalizadeh.modo.util.EntityToDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ import java.util.Optional;
 @Service
 public class TodoService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(TodoService.class);
     @Autowired
     private TodoRepository todoRepository;
 
@@ -34,6 +37,7 @@ public class TodoService {
     private EntityToDto entityToDto;
 
     public ResponseEntity<?> createTodo(Todo todo){
+        LOGGER.info("Started to create new todo: {}", todo.toString());
         if(Objects.isNull(todo)){
             throw new BadRequestHandler(ExceptionConstants.EMPTY_REQUEST_BODY);
         }else if(todo.getTitle() == null){
@@ -45,6 +49,7 @@ public class TodoService {
             }else {
                 Optional<Todo> newTask = Optional.of(todoRepository.save(todo));
                 if(newTask != null && !newTask.isEmpty() && newTask.get().getId() != null){
+                    LOGGER.info("Todo created successfully: {}", newTask.get().toString());
                     return new ResponseEntity<>("Task created successfully!", HttpStatus.OK);
                 }else {
                     throw new BadRequestHandler();
@@ -55,33 +60,40 @@ public class TodoService {
     }
 
     public Page<Todo> getAllTodos(Integer offset, Integer limit){
+        LOGGER.info("Started to fetch all todos");
         Pageable pageable = PageRequest.of(offset, limit, Sort.Direction.DESC, "createdAt");
          Page<Todo> todos =  todoRepository.findAll(pageable);
          return todos;
     }
 
     public ResponseEntity<?> getTodoById(String id){
+        LOGGER.info("Started to get todo by : {}", id);
         if(id == null || id == ""){
             throw new BadRequestHandler(ExceptionConstants.MISSING_MANDATORY_ID);
         }else {
             Optional<Todo> todo = todoRepository.findById(id);
             if(todo.isEmpty() || todo == null){
+                LOGGER.info("Todo with id: {} does not exist", id);
                 throw new TaskNotFoundException();
             }else {
+                LOGGER.info("Todo with id {} found", id);
                 return new ResponseEntity<>(todo, HttpStatus.OK);
             }
         }
     }
 
     public DeleteTodoResponse deleteTodo(String id){
+        LOGGER.info("Started to delete todo with id: {}", id);
         if(id == null || id == ""){
             throw new BadRequestHandler(ExceptionConstants.MISSING_MANDATORY_ID);
         }else {
             Optional<Todo> todo = todoRepository.findById(id);
             if(todo.isEmpty() || todo == null){
+                LOGGER.info("Todo with id: {} does not exist", id);
                 throw new TaskNotFoundException();
             }else {
                 todoRepository.deleteById(id);
+                LOGGER.info("Todo with id {} removed successfully", id);
                 return new DeleteTodoResponse("Task removed successfully!", "success");
                 }
             }
@@ -90,14 +102,18 @@ public class TodoService {
 
 
     public ResponseEntity<?> updateTodo(@PathVariable String id, @RequestBody TodoDto todoDto){
+        LOGGER.info("Started to update todo with id {} and details {}", id, todoDto.toString());
         if(id == null || id == ""){
+            LOGGER.info("Missing mandatory field id");
             throw new BadRequestHandler(ExceptionConstants.MISSING_MANDATORY_ID);
         }else if(Objects.isNull(todoDto) || todoDto.toString().equals("{}")){
+            LOGGER.info("Body is mandatory for todo update");
             throw new BadRequestHandler(ExceptionConstants.EMPTY_REQUEST_BODY);
         }else{
             Optional<Todo> todo = todoRepository.findById(id);
             Boolean needUpdate = false;
             if(todo == null || todo.isEmpty()){
+                LOGGER.info("Todo with id: {} does not exist", id);
                 throw new TaskNotFoundException();
             }else {
                 if(todoDto.getTitle() != null && !todoDto.getTitle().equals(todo.get().getTitle())){
@@ -119,6 +135,7 @@ public class TodoService {
             }
             if(needUpdate){
                 Todo todoDto1 = entityToDto.convertToDto(todo);
+                LOGGER.info("Todo updated successfully {}", todoDto1);
                 return new ResponseEntity<>(todoRepository.save(todoDto1), HttpStatus.OK);
             }else {
                 throw new BadRequestHandler(ExceptionConstants.DATA_WITH_OUT_CHANGE);
