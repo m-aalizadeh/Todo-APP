@@ -132,6 +132,10 @@ public class TodoService {
                     todo.get().setPriority(todoDto.getPriority());
                     needUpdate = true;
                 }
+                if(todoDto.getStatus() != null && !todoDto.getStatus().equals(todo.get().getStatus())) {
+                    todo.get().setStatus(todoDto.getStatus());
+                    needUpdate = true;
+                }
             }
             if(needUpdate){
                 Todo todoDto1 = entityToDto.convertToDto(todo);

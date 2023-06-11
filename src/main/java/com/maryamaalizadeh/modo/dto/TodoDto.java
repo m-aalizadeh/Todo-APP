@@ -2,6 +2,7 @@ package com.maryamaalizadeh.modo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.maryamaalizadeh.modo.model.Priority;
+import com.maryamaalizadeh.modo.model.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -18,14 +19,18 @@ public class TodoDto {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public TodoDto() {
     }
 
-    public TodoDto(String title, String description, Date dueDate, Priority priority) {
+    public TodoDto(String title, String description, Date dueDate, Priority priority, Status status) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.status = status;
     }
 
     public String getTitle() {
@@ -66,6 +71,14 @@ public class TodoDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
 

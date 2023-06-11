@@ -20,14 +20,18 @@ public class Todo {
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
     public Todo() {
     }
 
-    public Todo(String title, String description, Date dueDate, Priority priority) {
+    public Todo(String title, String description, Date dueDate, Priority priority, Status status) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.status = status;
     }
 
     public String getId() {
@@ -78,6 +82,14 @@ public class Todo {
         this.priority = priority;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Todo{" +
@@ -86,6 +98,9 @@ public class Todo {
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
                 ", priority=" + priority +
+                ", status=" + status +
                 '}';
     }
+
+
 }
