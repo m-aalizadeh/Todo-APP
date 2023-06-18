@@ -5,6 +5,7 @@ import com.maryamaalizadeh.modo.dto.TodoDto;
 import com.maryamaalizadeh.modo.exception.BadRequestHandler;
 import com.maryamaalizadeh.modo.exception.TaskAlreadyExists;
 import com.maryamaalizadeh.modo.exception.TaskNotFoundException;
+import com.maryamaalizadeh.modo.model.Status;
 import com.maryamaalizadeh.modo.model.Todo;
 import com.maryamaalizadeh.modo.payload.DeleteTodoResponse;
 import com.maryamaalizadeh.modo.repository.TodoRepository;
@@ -47,6 +48,7 @@ public class TodoService {
             if(todo1.isPresent()){
                 throw new TaskAlreadyExists();
             }else {
+                todo.setStatus(Status.OPEN);
                 Optional<Todo> newTask = Optional.of(todoRepository.save(todo));
                 if(newTask != null && !newTask.isEmpty() && newTask.get().getId() != null){
                     LOGGER.info("Todo created successfully: {}", newTask.get().toString());

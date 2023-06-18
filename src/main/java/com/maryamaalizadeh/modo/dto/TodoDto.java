@@ -15,9 +15,10 @@ public class TodoDto {
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
-
     @Enumerated(EnumType.STRING)
     private Priority priority;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Enumerated(EnumType.STRING)
     private Status status;
