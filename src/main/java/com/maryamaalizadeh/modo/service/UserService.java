@@ -9,6 +9,7 @@ import com.maryamaalizadeh.modo.model.User;
 import com.maryamaalizadeh.modo.repository.RoleRepository;
 import com.maryamaalizadeh.modo.repository.UserRepository;
 import com.maryamaalizadeh.modo.security.JwtUtilities;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired

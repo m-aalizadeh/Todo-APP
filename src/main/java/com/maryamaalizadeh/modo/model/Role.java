@@ -3,9 +3,11 @@ package com.maryamaalizadeh.modo.model;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
+@Document
 public class Role implements Serializable {
 
     @Id

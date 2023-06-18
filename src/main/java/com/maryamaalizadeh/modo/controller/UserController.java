@@ -4,6 +4,7 @@ import com.maryamaalizadeh.modo.dto.LoginDto;
 import com.maryamaalizadeh.modo.dto.RegisterDto;
 import com.maryamaalizadeh.modo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-@RequiredArgsConstructor
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto){
         return userService.register(registerDto);
     }

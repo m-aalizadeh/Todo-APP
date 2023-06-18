@@ -43,7 +43,6 @@ public class SecurityConfig {
             .requestMatchers("/admin/**").hasAuthority("ADMIN")
             .requestMatchers("/superadmin/**").hasAuthority("SUPERADMIN") ;
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return  http.build();
     }
 }
