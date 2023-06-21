@@ -1,7 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
 import * as Yup from "yup";
-import { t } from "@lingui/macro";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -10,13 +9,13 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Formik, Form, Field } from "formik";
 import { TextField as FTextField } from "formik-material-ui";
-import DatePickerComponent from "./DatePickerComponent";
+import DatePickerComponent from "./DatePickerComponent.jsx";
 
 const LOCAL_CONSTANTS = {
-  title: t`Capture Task Details`,
-  task: t`Task`,
-  description: t`Description`,
-  dueDate: t`Due Date`,
+  title: "Capture Task Details",
+  task: "Task",
+  description: "Description",
+  dueDate: "Due Date",
 };
 const priorityList = [
   {

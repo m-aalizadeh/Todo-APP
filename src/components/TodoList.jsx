@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import _isEmpty from "lodash/isEmpty";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
-import TodoBar from "./TodoBar";
-import CreateTask from "./CreateTask";
-import Todos from "./Todos";
+import TodoBar from "./TodoBar.jsx";
+import CreateTask from "./CreateTask.jsx";
+import Todos from "./Todos.jsx";
 import { APIHelper } from "../services/api";
 
 const { getAllRequest, postRequest } = APIHelper;

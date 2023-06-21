@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { t } from "@lingui/macro";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -7,8 +6,8 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import withStyles from "@mui/styles/withStyles";
-import CustomDialog from "../common/components/CustomDialog";
-import CreateTaskForm from "./CreateTaskForm";
+import CustomDialog from "../common/components/CustomDialog.jsx";
+import CreateTaskForm from "./CreateTaskForm.jsx";
 
 const styles = (theme) => ({
   root: {
@@ -20,8 +19,8 @@ const styles = (theme) => ({
 });
 
 const LOCAL_CONSTANTS = {
-  title: t`Capture Task Details`,
-  buttonTitle: t`Create a New Task`,
+  title: "Capture Task Details",
+  buttonTitle: "Create a New Task",
 };
 const CreateTask = ({ addTask }) => {
   const [open, setOpen] = useState(false);

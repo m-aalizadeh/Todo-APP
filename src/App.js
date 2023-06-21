@@ -1,6 +1,5 @@
-import "./App.css";
 import Grid from "@mui/material/Grid";
-import TodoList from "./components/TodoList";
+import TodoList from "./components/TodoList.jsx";
 
 function App() {
   return (

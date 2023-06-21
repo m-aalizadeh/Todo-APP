@@ -1,10 +1,9 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { t } from "@lingui/macro";
 import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
 
-const NoData = ({ title = t`No Data Available` }) => {
+const NoData = ({ title = "No Data Available" }) => {
   return (
     <Grid
       container
