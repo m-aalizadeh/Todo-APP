@@ -64,7 +64,7 @@ public class UserService {
         }
     }
 
-    public String authenticate(LoginDto loginDto){
+    public ResponseEntity<?> authenticate(LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -76,6 +76,6 @@ public class UserService {
         List<String> roleNames = new ArrayList<>();
         user.getRoles().forEach(r -> roleNames.add(r.getRoleName().toString()));
         String token = jwtUtilities.generateToken(user.getUsername(), roleNames);
-        return token;
+        return new ResponseEntity<>(new BearerToken(token, "Bearer "), HttpStatus.OK);
     }
 }

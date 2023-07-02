@@ -20,15 +20,18 @@ public class TodoDto {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String userId;
+
     public TodoDto() {
     }
 
-    public TodoDto(String title, String description, Date dueDate, Priority priority, Status status) {
+    public TodoDto(String title, String description, Date dueDate, Priority priority, Status status, String userId) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.status = status;
+        this.userId = userId;
     }
 
     public String getTitle() {
@@ -77,6 +80,14 @@ public class TodoDto {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
 

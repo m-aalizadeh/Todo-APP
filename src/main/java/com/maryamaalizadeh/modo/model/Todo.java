@@ -4,9 +4,11 @@ package com.maryamaalizadeh.modo.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 
 @Document
 public class Todo {
@@ -23,15 +25,18 @@ public class Todo {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private String userId;
     public Todo() {
     }
 
-    public Todo(String title, String description, Date dueDate, Priority priority, Status status) {
+    public Todo(String title, String description, Date dueDate, Priority priority, Status status, String userId) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.status = status;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -88,6 +93,14 @@ public class Todo {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
