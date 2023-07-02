@@ -111,6 +111,9 @@ public class Todo {
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
                 ", priority=" + priority +
+                ", status=" + status +
                 '}';
     }
+
+
 }

@@ -19,7 +19,6 @@ public class TodoDto {
     private Priority priority;
     @Enumerated(EnumType.STRING)
     private Status status;
-
     private String userId;
 
     public TodoDto() {
