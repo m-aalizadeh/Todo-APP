@@ -16,6 +16,7 @@ public class EntityToDto {
         todoDto.setDueDate(todo.get().getDueDate());
         todoDto.setPriority(todo.get().getPriority());
         todoDto.setStatus(todo.get().getStatus());
+        todoDto.setUserId(todo.get().getUserId());
         return todoDto;
     }
 }

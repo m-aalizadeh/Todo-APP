@@ -138,6 +138,10 @@ public class TodoService {
                     todo.get().setStatus(todoDto.getStatus());
                     needUpdate = true;
                 }
+                if(todoDto.getUserId() != null && !todoDto.getUserId().equals(todo.get().getUserId())) {
+                    todo.get().setUserId(todoDto.getUserId());
+                    needUpdate = true;
+                }
             }
             if(needUpdate){
                 Todo todoDto1 = entityToDto.convertToDto(todo);

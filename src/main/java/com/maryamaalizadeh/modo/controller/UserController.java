@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public String authenticate(@RequestBody LoginDto loginDto){
+    public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto){
         return userService.authenticate(loginDto);
     }
 
