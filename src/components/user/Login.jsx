@@ -1,34 +1,14 @@
-import React from "react";
-import MuiForm from "@rjsf/material-ui";
-
-function CustomFieldTemplate(props) {
-  const {
-    id,
-    classNames,
-    label,
-    help,
-    required,
-    description,
-    errors,
-    children,
-  } = props;
-  console.log(props, label);
-  return (
-    <div className={classNames}>
-      <label htmlFor={id}>
-        {label}
-        {required ? "*" : null}
-      </label>
-      {description}
-      {children}
-      {errors}
-      {help}
-    </div>
-  );
-}
+import React, { useState } from "react";
+import MuiForm from "react-jsonschema-form";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import CustomFieldTemplate from "./CustomFieldTemplate";
+import CustomTextField from "./CustomTextField";
 const Login = () => {
+  const [liveValidate, setLiveValidate] = useState(false);
+  const [extraErrors, setExtraErrors] = useState([]);
   const schema = {
-    title: "Login",
     type: "object",
     required: ["email", "password"],
     properties: {
@@ -36,15 +16,19 @@ const Login = () => {
       password: { type: "string", title: "password" },
     },
   };
-
+  const widgets = {
+    TextWidget: CustomTextField,
+  };
   const uiSchema = {
     "ui:order": ["email", "password"],
-    password: {
-      "ui:widget": "password", // could also be "select"
-    },
+    "ui:widget": "TextWidget",
+    // password: {
+    //   "ui:widget": "password", // could also be "select"
+    // },
   };
 
   const onSubmit = ({ formData }) => console.log("Data submitted: ", formData);
+  const onChange = (event) => console.log("event", event);
   const onError = (errors) =>
     console.log(errors, "I have", errors.length, "errors to fix");
 
@@ -54,14 +38,30 @@ const Login = () => {
   };
 
   return (
-    <MuiForm
-      schema={schema}
-      uiSchema={uiSchema}
-      formData={formData}
-      onError={onError}
-      onSubmit={onSubmit}
-      FieldTemplate={CustomFieldTemplate}
-    />
+    <Paper elevation={1}>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <Typography>Login</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <MuiForm
+            noHtml5Validate
+            showError
+            showErrorList={false}
+            liveValidate={liveValidate}
+            extraErrors={extraErrors}
+            schema={schema}
+            uiSchema={uiSchema}
+            formData={formData}
+            onError={onError}
+            onSubmit={onSubmit}
+            onChange={onChange}
+            // FieldTemplate={CustomFieldTemplate}
+            widgets={widgets}
+          />
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 
