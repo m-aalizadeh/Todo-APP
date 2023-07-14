@@ -37,7 +37,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/user/**").permitAll()
+                        auth.requestMatchers("/app/v1/user/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 //            http

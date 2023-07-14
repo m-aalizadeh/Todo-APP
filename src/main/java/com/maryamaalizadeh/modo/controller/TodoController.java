@@ -26,10 +26,10 @@ public class TodoController {
         return  todoService.createTodo(todo);
     }
 
-    @GetMapping("/todos")
-    public PagedResponse<Todo> getAllTodos(@RequestParam(value = "offset", defaultValue = ControllerConstants.DEFAULT_PAGE_NUMBER) Integer offset,
+    @GetMapping("/todos/{id}")
+    public PagedResponse<Todo> getAllTodos(@PathVariable String id, @RequestParam(value = "offset", defaultValue = ControllerConstants.DEFAULT_PAGE_NUMBER) Integer offset,
                                   @RequestParam(value = "limit", defaultValue = ControllerConstants.DEFAULT_PAGE_SIZE) Integer limit){
-        Page<Todo> todos = todoService.getAllTodos(offset, limit);
+        Page<Todo> todos = todoService.getAllTodos(offset, limit, id);
         if(todos.getTotalElements() == 0){
             return new PagedResponse<>(Collections.emptyList(), todos.getNumber(),
                     todos.getSize(), todos.getTotalElements(), todos.getTotalPages(), todos.isLast());

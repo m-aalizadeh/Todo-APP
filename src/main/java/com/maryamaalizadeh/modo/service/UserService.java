@@ -3,6 +3,7 @@ package com.maryamaalizadeh.modo.service;
 import com.maryamaalizadeh.modo.dto.BearerToken;
 import com.maryamaalizadeh.modo.dto.LoginDto;
 import com.maryamaalizadeh.modo.dto.RegisterDto;
+import com.maryamaalizadeh.modo.dto.UserJson;
 import com.maryamaalizadeh.modo.model.Role;
 import com.maryamaalizadeh.modo.model.RoleName;
 import com.maryamaalizadeh.modo.model.User;
@@ -58,9 +59,9 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
             Role role = roleRepository.findByRoleName(RoleName.USER);
             user.setRoles(Collections.singletonList(role));
-            userRepository.save(user);
+            User createdUser = userRepository.save(user);
             String token = jwtUtilities.generateToken(registerDto.getEmail(), Collections.singletonList(role.getRoleName().toString()));
-            return new ResponseEntity<>(new BearerToken(token, "Bearer "), HttpStatus.OK);
+            return new ResponseEntity<>(new UserJson(createdUser.getEmail(), createdUser.getId(), token, "Bearer "), HttpStatus.OK);
         }
     }
 
@@ -76,6 +77,6 @@ public class UserService {
         List<String> roleNames = new ArrayList<>();
         user.getRoles().forEach(r -> roleNames.add(r.getRoleName().toString()));
         String token = jwtUtilities.generateToken(user.getUsername(), roleNames);
-        return new ResponseEntity<>(new BearerToken(token, "Bearer "), HttpStatus.OK);
+        return new ResponseEntity<>(new UserJson(user.getEmail(), user.getId(), token, "Bearer "), HttpStatus.OK);
     }
 }

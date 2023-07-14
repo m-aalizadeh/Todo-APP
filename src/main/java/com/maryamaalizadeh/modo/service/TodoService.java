@@ -61,10 +61,10 @@ public class TodoService {
 
     }
 
-    public Page<Todo> getAllTodos(Integer offset, Integer limit){
+    public Page<Todo> getAllTodos(Integer offset, Integer limit, String id){
         LOGGER.info("Started to fetch all todos");
         Pageable pageable = PageRequest.of(offset, limit, Sort.Direction.DESC, "createdAt");
-         Page<Todo> todos =  todoRepository.findAll(pageable);
+         Page<Todo> todos =  todoRepository.findByUserId(id, pageable);
          return todos;
     }
 
