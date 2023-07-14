@@ -1,24 +1,23 @@
 import * as yup from "yup";
 
 export const signInInitialValues = {
-  username: "",
+  email: "",
   password: "",
 };
 
 export const signUpInitialVlues = {
   firstName: "",
   lastName: "",
-  username: "",
   email: "",
   password: "",
   confirmedPassword: "",
 };
 
 export const signInSchema = {
-  username: {
+  email: {
     type: "text",
-    label: "Username",
-    name: "username",
+    label: "Email",
+    name: "email",
   },
   password: {
     type: "password",
@@ -60,10 +59,10 @@ export const signUpSchema = (isSignUp) => {
 
 export const signInValidation = () => {
   return yup.object().shape({
-    username: yup
+    email: yup
       .string()
-      .required("Username is required.")
-      .max(40, "Username must be 40 characters at most"),
+      .required("Email is required.")
+      .max(40, "Email must be 40 characters at most"),
     password: yup
       .string()
       .required("Password is required.")

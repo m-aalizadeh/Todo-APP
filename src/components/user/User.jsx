@@ -40,20 +40,14 @@ const User = ({ history, classes }) => {
 
   const submitForm = async (values) => {
     setLoader(true);
-    const {
-      email = "",
-      username = "",
-      password = "",
-      firstName = "",
-      lastName = "",
-    } = values;
+    const { email = "", password = "", firstName = "", lastName = "" } = values;
     let result = {};
     if (signInPage) {
       result = await APIHelper.postRequest("user/authenticate", {
-        username,
+        email,
         password,
       });
-      if (result?.id && result?.token) {
+      if (result?.accessToken) {
         localStorage.setItem("user", JSON.stringify(result));
         history("/todos");
       }
@@ -64,6 +58,10 @@ const User = ({ history, classes }) => {
         firstName,
         lastName,
       });
+      if (result?.accessToken) {
+        localStorage.setItem("user", JSON.stringify(result));
+        history("/todos");
+      }
     }
     setLoader(false);
   };

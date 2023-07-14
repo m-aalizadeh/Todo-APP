@@ -18,10 +18,12 @@ const styles = (theme) => ({
 });
 
 const TodoList = ({ classes }) => {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const { userId = "" } = user;
   const [tasks, setTodos] = useState([]);
 
   const getTodos = async () => {
-    const result = await getAllRequest("todos", "offset=0&limit=20");
+    const result = await getAllRequest(`todos/${userId}`, "offset=0&limit=20");
     if (!_isEmpty(result) && result.content) setTodos(result.content);
   };
 
