@@ -12,16 +12,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import Checkbox from "@mui/material/Checkbox";
 import withStyles from "@mui/styles/withStyles";
 import CustomDialog from "../common/components/CustomDialog";
 import CreateTaskForm from "./CreateTaskForm";
 import NoData from "./NoData";
 import { APIHelper } from "../services/api";
-import { getFormattedDate } from "../common/utils";
+import { getFormattedDate, constants } from "../common/utils";
 
-const MenuItems = ({ todo, handleClick, open, handleExpand }) => {
+const MenuItems = ({ todo, handleClick, open, handleExpand, handleClose }) => {
   return (
     <>
+      <Checkbox
+        color="success"
+        checked={todo.status === constants.status.completed}
+        onChange={() => handleClose(todo.id)}
+      />
       <IconButton size="small" onClick={() => handleClick("edit", todo)}>
         <EditIcon />
       </IconButton>
@@ -78,6 +84,15 @@ const Todos = ({ todos = [], getTodos, classes }) => {
     getTodos();
   };
 
+  const handleClose = async (id) => {
+    await APIHelper.patchRequest(
+      "todo",
+      { status: constants.status.completed },
+      id
+    );
+    getTodos();
+  };
+
   if (!todos.length) {
     return <NoData />;
   }
@@ -116,6 +131,7 @@ const Todos = ({ todos = [], getTodos, classes }) => {
                     todo={todo}
                     handleClick={handleEdit}
                     handleExpand={() => handleClick(id)}
+                    handleClose={handleClose}
                   />
                 }
                 title={title}
