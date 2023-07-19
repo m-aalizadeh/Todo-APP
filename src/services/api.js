@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:8080/app/v1/";
+const user = JSON.parse(localStorage.getItem("user"));
 
 class ApiHelper {
   //     private accessToken?: string;
@@ -17,8 +18,14 @@ class ApiHelper {
 
   getAllRequest = async (endpoint, queryParams) => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
       const response = await fetch(`${BASE_URL}${endpoint}?${queryParams}`, {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       });
       const responseJson = await response.json();
       return responseJson;
@@ -29,12 +36,17 @@ class ApiHelper {
 
   postRequest = async (endpoint, body) => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      let headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      if (user?.accessToken) {
+        headers = { ...headers, Authorization: `Bearer ${user.accessToken}` };
+      }
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify(body),
       });
 
@@ -47,7 +59,7 @@ class ApiHelper {
       //     Actions.auth();
       //   }
 
-      return finalResponse;
+      return responseJson;
     } catch (error) {
       console.error(error);
       return error;
@@ -56,11 +68,13 @@ class ApiHelper {
 
   patchRequest = async (endpoint, body, queryParams) => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
       const response = await fetch(`${BASE_URL}${endpoint}/${queryParams}`, {
         method: "PATCH",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.accessToken}`,
         },
         body: JSON.stringify(body),
       });
@@ -75,11 +89,13 @@ class ApiHelper {
 
   deleteRequest = async (endpoint, queryParams) => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
       const response = await fetch(`${BASE_URL}${endpoint}/${queryParams}`, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.accessToken}`,
         },
       });
       const responseJson = await response.json();
