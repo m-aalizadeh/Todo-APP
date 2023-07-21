@@ -7,8 +7,11 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import withStyles from "@mui/styles/withStyles";
-import CustomDialog from "../common/components/CustomDialog";
+import CustomDialog from "../../common/components/CustomDialog";
 import CreateTaskForm from "./CreateTaskForm";
+import { APIHelper } from "../../services/api";
+
+const { postRequest } = APIHelper;
 
 const styles = (theme) => ({
   root: {
@@ -23,14 +26,23 @@ const LOCAL_CONSTANTS = {
   title: t`Capture Task Details`,
   buttonTitle: t`Create a New Task`,
 };
-const CreateTask = ({ addTask }) => {
+const CreateTask = ({ handleShowToast, getTodos }) => {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const { userId = "" } = user;
   const [open, setOpen] = useState(false);
   const handleDialog = () => {
     setOpen(!open);
   };
 
-  const createTask = (payload) => {
-    addTask(payload);
+  const createTask = async (payload) => {
+    const result = await postRequest("todo", { ...payload, userId });
+    if (result?.id) {
+      handleShowToast({
+        type: "success",
+        message: "Task Updated Successfully!",
+      });
+    }
+    getTodos();
     handleDialog();
   };
 
@@ -63,7 +75,7 @@ const CreateTask = ({ addTask }) => {
       <CustomDialog
         open={open}
         handleCancel={handleDialog}
-        handleProceed={addTask}
+        handleProceed={createTask}
         title={LOCAL_CONSTANTS.title}
         component={
           <CreateTaskForm

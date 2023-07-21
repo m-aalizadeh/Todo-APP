@@ -10,7 +10,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Formik, Form, Field } from "formik";
 import { TextField as FTextField } from "formik-material-ui";
-import DatePickerComponent from "./DatePickerComponent";
+import DatePickerComponent from "../DatePickerComponent";
 
 const LOCAL_CONSTANTS = {
   title: t`Capture Task Details`,
@@ -25,7 +25,7 @@ const priorityList = [
   },
   {
     code: "HIGH",
-    name: "GIGH",
+    name: "HIGH",
   },
 ];
 

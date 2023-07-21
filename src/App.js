@@ -1,7 +1,7 @@
 import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import TodoList from "./components/TodoList";
+import TodoList from "./components/todo";
 import User from "./components/user/User";
 
 function App() {

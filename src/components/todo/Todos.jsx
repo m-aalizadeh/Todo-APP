@@ -12,16 +12,28 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import Checkbox from "@mui/material/Checkbox";
 import withStyles from "@mui/styles/withStyles";
-import CustomDialog from "../common/components/CustomDialog";
+import CustomDialog from "../../common/components/CustomDialog";
 import CreateTaskForm from "./CreateTaskForm";
-import NoData from "./NoData";
-import { APIHelper } from "../services/api";
-import { getFormattedDate } from "../common/utils";
+import NoData from "../NoData";
+import { APIHelper } from "../../services/api";
+import { getFormattedDate, constants } from "../../common/utils";
 
-const MenuItems = ({ todo, handleClick, open, handleExpand }) => {
+const MenuItems = ({
+  todo,
+  handleClick,
+  open,
+  handleExpand,
+  handleComplete,
+}) => {
   return (
     <>
+      <Checkbox
+        checked={todo.status === constants.status.completed}
+        onChange={handleComplete}
+        inputProps={{ "aria-label": "controlled" }}
+      />
       <IconButton size="small" onClick={() => handleClick("edit", todo)}>
         <EditIcon />
       </IconButton>
@@ -46,7 +58,7 @@ const styles = () => ({
   },
 });
 
-const Todos = ({ todos = [], getTodos, classes }) => {
+const Todos = ({ todos = [], getTodos, handleShowToast, classes }) => {
   const [open, setOpen] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -65,7 +77,14 @@ const Todos = ({ todos = [], getTodos, classes }) => {
 
   const handleEdit = async (action, todo) => {
     if (action === "delete") {
-      await APIHelper.deleteRequest("todo", todo);
+      const result = await APIHelper.deleteRequest("todo", todo);
+      if (result?.status) {
+        const { status = "", message = "" } = result;
+        handleShowToast({
+          message: message,
+          type: status,
+        });
+      }
     } else if (action === "edit") {
       handleShowDialog(todo);
     }
@@ -73,7 +92,27 @@ const Todos = ({ todos = [], getTodos, classes }) => {
   };
 
   const handleUpdateTodo = async (payload) => {
-    await APIHelper.patchRequest("todo", payload, openDialog.id);
+    const result = await APIHelper.patchRequest(
+      "todo/update",
+      payload,
+      openDialog.id
+    );
+    if (result?.id) {
+      handleShowToast({
+        message: "Task updated successfully!",
+        type: "success",
+      });
+    }
+    handleHideDialog();
+    getTodos();
+  };
+
+  const handleComplete = async (id) => {
+    await APIHelper.patchRequest(
+      "todo/update",
+      { status: constants.status.completed },
+      id
+    );
     handleHideDialog();
     getTodos();
   };
@@ -116,6 +155,7 @@ const Todos = ({ todos = [], getTodos, classes }) => {
                     todo={todo}
                     handleClick={handleEdit}
                     handleExpand={() => handleClick(id)}
+                    handleComplete={() => handleComplete(id)}
                   />
                 }
                 title={title}

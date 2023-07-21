@@ -5,7 +5,7 @@ import withStyles from "@mui/styles/withStyles";
 import TodoBar from "./TodoBar";
 import CreateTask from "./CreateTask";
 import Todos from "./Todos";
-import { APIHelper } from "../services/api";
+import { APIHelper } from "../../services/api";
 
 const { getAllRequest, postRequest } = APIHelper;
 
@@ -17,7 +17,7 @@ const styles = (theme) => ({
   },
 });
 
-const TodoList = ({ classes }) => {
+const TodoList = ({ handleShowToast }) => {
   const user = JSON.parse(localStorage.getItem("user")) || {};
   const { userId = "" } = user;
   const [tasks, setTodos] = useState([]);
@@ -31,10 +31,16 @@ const TodoList = ({ classes }) => {
     getTodos();
   }, []);
 
-  const addTask = async (task) => {
-    await postRequest("todo", { ...task, userId });
-    getTodos();
-  };
+  // const addTask = async (task) => {
+  //   const result = await postRequest("todo", { ...task, userId });
+  //   if (result?.id) {
+  //     handleShowToast({
+  //       type: "success",
+  //       message: "Task Created Successfully!",
+  //     });
+  //   }
+  //   getTodos();
+  // };
 
   return (
     <Grid container spacing={4}>
@@ -42,10 +48,18 @@ const TodoList = ({ classes }) => {
         <TodoBar />
       </Grid>
       <Grid item xs={12}>
-        <CreateTask addTask={addTask} />
+        <CreateTask
+          getTodos={getTodos}
+          // addTask={addTask}
+          handleShowToast={handleShowToast}
+        />
       </Grid>
       <Grid item xs={12}>
-        <Todos todos={tasks} getTodos={getTodos} />
+        <Todos
+          todos={tasks}
+          getTodos={getTodos}
+          handleShowToast={handleShowToast}
+        />
       </Grid>
     </Grid>
   );
