@@ -52,7 +52,7 @@ public class TodoService {
                 Optional<Todo> newTask = Optional.of(todoRepository.save(todo));
                 if(newTask != null && !newTask.isEmpty() && newTask.get().getId() != null){
                     LOGGER.info("Todo created successfully: {}", newTask.get().toString());
-                    return new ResponseEntity<>("Task created successfully!", HttpStatus.OK);
+                    return new ResponseEntity<>(newTask, HttpStatus.OK);
                 }else {
                     throw new BadRequestHandler();
                 }
@@ -115,6 +115,7 @@ public class TodoService {
             Optional<Todo> todo = todoRepository.findById(id);
             Boolean needUpdate = false;
             if(todo == null || todo.isEmpty()){
+                System.out.println("todo");
                 LOGGER.info("Todo with id: {} does not exist", id);
                 throw new TaskNotFoundException();
             }else {

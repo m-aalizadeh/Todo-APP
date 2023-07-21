@@ -44,7 +44,7 @@ public class TodoController {
         return todoService.deleteTodo(id);
     }
 
-    @PatchMapping("/todo/{id}")
+    @PatchMapping("/todo/update/{id}")
     public ResponseEntity<?> updateTodo(@PathVariable String id, @RequestBody TodoDto todoDto){
         return todoService.updateTodo(id, todoDto);
     }
