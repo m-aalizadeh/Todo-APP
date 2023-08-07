@@ -20,14 +20,14 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file)throws IOException{
-        return new ResponseEntity<>(fileService.addFile(file), HttpStatus.OK);
+    @PostMapping("/upload/{userId}")
+    public ResponseEntity<?> upload(@PathVariable String userId, @RequestParam("file") MultipartFile file)throws IOException{
+        return new ResponseEntity<>(fileService.addFile(userId, file), HttpStatus.OK);
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<ByteArrayResource> download(@PathVariable String id) throws IOException {
-        LoadFile loadFile = fileService.downloadFile(id);
+    @GetMapping("/download/{userId}")
+    public ResponseEntity<ByteArrayResource> download(@PathVariable String userId) throws IOException {
+        LoadFile loadFile = fileService.downloadFile(userId);
         System.out.println(loadFile);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(loadFile.getFileType() ))

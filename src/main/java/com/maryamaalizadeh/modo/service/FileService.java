@@ -1,6 +1,7 @@
 package com.maryamaalizadeh.modo.service;
 
 import com.maryamaalizadeh.modo.model.LoadFile;
+import com.maryamaalizadeh.modo.payload.UploadFileResponse;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
@@ -24,19 +25,22 @@ public class FileService {
     @Autowired
     private GridFsOperations operations;
 
-    public String addFile(MultipartFile upload)throws IOException{
+    public UploadFileResponse addFile(String userId, MultipartFile upload)throws IOException{
         DBObject metaData = new BasicDBObject();
         metaData.put("fileSize", upload.getSize());
-
+        metaData.put("userId", userId);
         Object fileID = template.store(upload.getInputStream(), upload.getOriginalFilename(),
                 upload.getContentType(), metaData);
 
-        return fileID.toString();
+        UploadFileResponse uploadFileResponse = new UploadFileResponse();
+        uploadFileResponse.setMessage("File Uploaded Successfully");
+        uploadFileResponse.setFileId(fileID.toString());
+        return uploadFileResponse;
     }
 
-    public LoadFile downloadFile(String id) throws IOException {
+    public LoadFile downloadFile(String userId) throws IOException {
 
-        GridFSFile gridFSFile = template.findOne( new Query(Criteria.where("_id").is(id)) );
+        GridFSFile gridFSFile = template.findOne( new Query(Criteria.where("metadata.userId").is(userId)) );
 
         LoadFile loadFile = new LoadFile();
 
@@ -46,8 +50,6 @@ public class FileService {
             loadFile.setFileType( gridFSFile.getMetadata().get("_contentType").toString() );
 
             loadFile.setFileSize( gridFSFile.getMetadata().get("fileSize").toString() );
-            System.out.println("option");
-            System.out.println();
             loadFile.setFile(IOUtils.toByteArray(operations.getResource(gridFSFile).getInputStream()));
         }
 
