@@ -38,7 +38,7 @@ public class TodoController {
                 todos.getSize(), todos.getTotalElements(), todos.getTotalPages(), todos.isLast());
     }
 
-    @DeleteMapping("/todo/{id}")
+    @DeleteMapping("/todo/delete/{id}")
     public DeleteResponse deleteTodo(@PathVariable String id){
         return todoService.deleteTodo(id);
     }

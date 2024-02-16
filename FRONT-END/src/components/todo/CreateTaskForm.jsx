@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import * as Yup from "yup";
 import { t } from "@lingui/macro";
@@ -41,11 +42,7 @@ const validationSchema = Yup.object().shape({
     .min(dayjs(), "Should be more than today"),
 });
 
-const CreateTaskForm = ({
-  handleProceed,
-  handleCancel,
-  initialValues = {},
-}) => {
+const CreateTaskForm = ({ handleProceed, handleCancel, initialValues }) => {
   return (
     <Formik
       validationSchema={validationSchema}
@@ -174,6 +171,18 @@ const CreateTaskForm = ({
       }}
     </Formik>
   );
+};
+
+CreateTaskForm.propTypes = {
+  initialValues: PropTypes.object,
+  handleProceed: PropTypes.func,
+  handleCancel: PropTypes.func,
+};
+
+CreateTaskForm.defaultProps = {
+  initialValues: {},
+  handleProceed: () => {},
+  handleCancel: () => {},
 };
 
 export default CreateTaskForm;

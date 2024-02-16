@@ -10,13 +10,14 @@ import CustomDialog from "../../common/components/CustomDialog";
 import CreateColumnForm from "./CreateColumnForm";
 import Column from "./Column";
 import { commonFetch } from "../../services/api";
+import { getUserDetails } from "../../common/utils";
 
 const LOCAL_CONSTANTS = {
   title: t`Capture Column Details`,
 };
 
 const Board = ({ handleShowToast }) => {
-  const { userId = "" } = JSON.parse(localStorage.getItem("user")) || {};
+  const { userId = "" } = getUserDetails();
 
   const [allColumns, setAllColumns] = useState([]);
   const [modal, setModal] = useState(false);
@@ -54,7 +55,7 @@ const Board = ({ handleShowToast }) => {
     }
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -108,7 +109,24 @@ const Board = ({ handleShowToast }) => {
       description: finish.description,
       tasks: finishTasks,
     };
-    setAllColumns(clonedColumns);
+    const response = await commonFetch(
+      "PATCH",
+      `todo/update/${draggableId}`,
+      undefined,
+      { columnId: finish.id }
+    );
+    if (response?.id) {
+      setAllColumns(clonedColumns);
+      handleShowToast({
+        type: "success",
+        message: "Task updated Successfully!",
+      });
+    } else {
+      handleShowToast({
+        type: "failed",
+        message: "Task modification Failed!",
+      });
+    }
   };
 
   const handleModal = () => {

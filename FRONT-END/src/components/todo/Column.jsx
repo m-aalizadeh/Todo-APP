@@ -128,9 +128,11 @@ const Column = ({
                         borderRadius: 3,
                         border: "1px solid #EAEAEA",
                         color: "white",
+                        minHeight: "17vh",
+                        maxHeight: "22vh",
                       }}
                     >
-                      <Task task={task} index={index} />
+                      <Task task={task} index={index} onRefresh={getColumns} />
                     </Grid>
                   );
                 })}
