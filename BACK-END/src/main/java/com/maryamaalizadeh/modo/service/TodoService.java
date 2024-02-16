@@ -149,8 +149,9 @@ public class TodoService {
                     todo.get().setStatus(todoDto.getStatus());
                     needUpdate = true;
                 }
-                if(todoDto.getColumn() != null && !todoDto.getColumn().equals(todo.get().getColumn())) {
-                    todo.get().setColumn(todoDto.getColumn());
+                if(todoDto.getColumnId() != null && !todoDto.getColumnId().equals(todo.get().getColumn().getId())) {
+                    Optional<Column> column = columnRepository.findById(todoDto.getColumnId());
+                    todo.get().setColumn(column.get());
                     needUpdate = true;
                 }
             }

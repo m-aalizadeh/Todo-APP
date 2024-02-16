@@ -20,18 +20,18 @@ public class TodoDto {
     private Priority priority;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private Column column;
+    private String columnId;
 
     public TodoDto() {
     }
 
-    public TodoDto(String title, String description, Date dueDate, Priority priority, Status status, Column column) {
+    public TodoDto(String title, String description, Date dueDate, Priority priority, Status status, String columnId) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.status = status;
-        this.column = column;
+        this.columnId = columnId;
     }
 
     public String getTitle() {
@@ -82,12 +82,12 @@ public class TodoDto {
         this.status = status;
     }
 
-    public Column getColumn() {
-        return column;
+    public String getColumnId() {
+        return columnId;
     }
 
-    public void setColumn(Column column) {
-        this.column = column;
+    public void setColumnId(String columnId) {
+        this.columnId = columnId;
     }
 }
 
