@@ -64,7 +64,7 @@ const TodoBar = () => {
 
   return (
     <>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <Grid container direction="column" alignItems="flex-end">
             <Grid item>
@@ -136,19 +136,7 @@ const TodoBar = () => {
         type="file"
         ref={fileRef}
         multiple={true}
-        accept={[
-          "image/*",
-          ".jpg",
-          ".jpeg",
-          ".png",
-          ".xls",
-          ".xlsx",
-          ".doc",
-          ".docx",
-          ".pdf",
-          ".txt",
-          ".msg",
-        ]}
+        accept={["image/*", ".jpg", ".jpeg", ".png"]}
         onChange={handleFileUpload}
       />
     </>

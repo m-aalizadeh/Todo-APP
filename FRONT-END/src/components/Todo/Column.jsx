@@ -90,12 +90,12 @@ const Column = ({
         color: "white",
       }}
     >
-      <Grid item pl={2}>
+      <Grid item pl={1}>
         <Grid container>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="h5">{title}</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Grid container>
               <IconButton size="small" onClick={handleModal}>
                 <EditIcon />
