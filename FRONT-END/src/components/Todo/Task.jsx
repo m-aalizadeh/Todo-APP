@@ -63,19 +63,20 @@ const Task = ({ task, index, onRefresh }) => {
           >
             <Grid item pt={1}>
               <Grid container direction="row">
-                <Grid item xs={8}>
+                <Grid item xs={3} align="center">
                   <Typography
                     style={{
                       backgroundColor:
                         LOCAL_CONSTANTS.colors[priority.toLowerCase()],
                       color: "black",
+                      borderRadius: 3,
                     }}
                   >
                     {priority}
                   </Typography>
                 </Grid>
-                <Grid item xs={4}>
-                  <Grid container>
+                <Grid item xs={9}>
+                  <Grid container justifyContent="flex-end">
                     <IconButton size="small" onClick={handleModal}>
                       <EditIcon />
                     </IconButton>

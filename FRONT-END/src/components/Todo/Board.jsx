@@ -8,6 +8,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { t } from "@lingui/macro";
 import CustomDialog from "../../common/components/CustomDialog";
 import CreateColumnForm from "./CreateColumnForm";
+import NoData from "../NoData";
 import Column from "./Column";
 import { commonFetch } from "../../services/api";
 import { getUserDetails } from "../../common/utils";
@@ -47,9 +48,9 @@ const Board = ({ handleShowToast }) => {
     getColumns();
   }, []);
 
-  const onDragStart = (tmp) => {};
+  const onDragStart = () => {};
 
-  const onDragUpdate = (tmp) => {
+  const onDragUpdate = () => {
     if (document.activeElement.tagName.toUpperCase() === "TEXTAREA") {
       document.activeElement.blur();
     }
@@ -143,19 +144,27 @@ const Board = ({ handleShowToast }) => {
     }
   };
 
+  if (!allColumns.length) {
+    return <NoData />;
+  }
+
   return (
-    <Grid container spacing={2}>
-      <Grid item>
+    <Grid
+      container
+      spacing={2}
+      // style={{ overflowY: "hidden", overflowX: "auto", width: "250vh" }}
+    >
+      <Grid item mx={1}>
         <DragDropContext
           onDragStart={onDragStart}
           onDragUpdate={onDragUpdate}
           onDragEnd={onDragEnd}
         >
-          <Grid container direction="row">
+          <Grid container spacing={2} direction="row">
             {allColumns.map(
               ({ id = "", title = "", description = "", tasks = [] }) => {
                 return (
-                  <Grid item key={id} pl={2} style={{ width: "300px" }}>
+                  <Grid item key={id} style={{ width: "335px" }}>
                     <Column
                       columnId={id}
                       title={title}
