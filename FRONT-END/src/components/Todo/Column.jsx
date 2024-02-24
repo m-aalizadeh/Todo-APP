@@ -107,41 +107,39 @@ const Column = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <Droppable droppableId={columnId}>
-          {(provided) => (
-            <Grid
-              container
-              direction="column"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <Visible when={tasks.length}>
-                {tasks.map((task, index) => {
-                  return (
-                    <Grid
-                      item
-                      mx={1}
-                      mt={1}
-                      key={task.id}
-                      style={{
-                        borderRadius: 3,
-                        border: "1px solid #EAEAEA",
-                        color: "white",
-                        minHeight: "17vh",
-                        maxHeight: "22vh",
-                      }}
-                    >
-                      <Task task={task} index={index} onRefresh={getColumns} />
-                    </Grid>
-                  );
-                })}
-                {provided.placeholder}
-              </Visible>
-            </Grid>
-          )}
-        </Droppable>
-      </Grid>
+      <Droppable droppableId={columnId}>
+        {(provided) => (
+          <Grid
+            container
+            direction="column"
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <Visible when={tasks.length}>
+              {tasks.map((task, index) => {
+                return (
+                  <Grid
+                    item
+                    mx={1}
+                    mt={1}
+                    key={task.id}
+                    style={{
+                      borderRadius: 3,
+                      border: "1px solid #EAEAEA",
+                      color: "white",
+                      minHeight: "17vh",
+                      maxHeight: "22vh",
+                    }}
+                  >
+                    <Task task={task} index={index} onRefresh={getColumns} />
+                  </Grid>
+                );
+              })}
+              {provided.placeholder}
+            </Visible>
+          </Grid>
+        )}
+      </Droppable>
       <Grid item align="center" mt={2}>
         <Button variant="contained" onClick={() => handleModal("task")}>
           <Typography variant="caption">Add New Task</Typography>
